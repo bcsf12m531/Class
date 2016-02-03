@@ -4,37 +4,261 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+        @Styles.Render("~/Content/css")
+        @Scripts.Render("~/Scripts/js")
+        @Scripts.Render("~/Scripts/modernizr")
 </head>
-<body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+<body style="padding-top:0px;background-color:beige;">
+    <script src="~/Scripts/jssor.slider.mini.js"></script>
+    <script src="~/Scripts/jquery-1.9.1.min.js"></script>
+    @{
+        Dr.Israr_Ahmed.Models.DrIsrarAhmedDbEntities db = new Dr.Israr_Ahmed.Models.DrIsrarAhmedDbEntities();
+        List<Dr.Israr_Ahmed.Models.Category> categories = new List<Dr.Israr_Ahmed.Models.Category>();
+        foreach (Dr.Israr_Ahmed.Models.Category category in db.Categories)
+        {
+            if (db.Videos.Any(x => x.Id == category.Id))
+            {
+                categories.Add(category);
+            }
+        }
+            
+    }
+            
+    <div class="container body-content">
+        <div class="row">
+            <div class="list-group col-sm-6 col-md-3">
+                <div style="margin-top:10px;"></div>
+                <a href="~/Home/Index"><img src="~/Content/images/01.jpg" width="275" height="250" /></a>
+                <div style="margin-top:10px;"></div>
+                <a href="~/AllCategories/Index" class="list-group-item"><b>All Categories</b></a>
+                @foreach(Dr.Israr_Ahmed.Models.Category category in categories )
+                {
+                    @Html.ActionLink(@category.Name, "PlayCategory", "PlayVideo", new { Id = category.Id }, new {@class = "list-group-item"})
+                }
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                </ul>
+            <div class="col-md-9">
+
+                <script>
+                    jQuery(document).ready(function ($) {
+
+                        var jssor_1_SlideshowTransitions = [
+                          { $Duration: 1200, $Opacity: 2 }
+                        ];
+
+                        var jssor_1_options = {
+                            $AutoPlay: true,
+                            $SlideshowOptions: {
+                                $Class: $JssorSlideshowRunner$,
+                                $Transitions: jssor_1_SlideshowTransitions,
+                                $TransitionsOrder: 1
+                            },
+                            $ArrowNavigatorOptions: {
+                                $Class: $JssorArrowNavigator$
+                            },
+                            $BulletNavigatorOptions: {
+                                $Class: $JssorBulletNavigator$
+                            }
+                        };
+
+                        var jssor_1_slider = new $JssorSlider$("jssor_1", jssor_1_options);
+
+                        //responsive code begin
+                        //you can remove responsive code if you don't want the slider scales while window resizing
+                        function ScaleSlider() {
+                            var refSize = jssor_1_slider.$Elmt.parentNode.clientWidth;
+                            if (refSize) {
+                                refSize = Math.min(refSize, 850);
+                                jssor_1_slider.$ScaleWidth(refSize);
+                            }
+                            else {
+                                window.setTimeout(ScaleSlider, 30);
+                            }
+                        }
+                        ScaleSlider();
+                        $(window).bind("load", ScaleSlider);
+                        $(window).bind("resize", ScaleSlider);
+                        $(window).bind("orientationchange", ScaleSlider);
+                        //responsive code end
+                    });
+                </script>
+
+                <style>
+                        /* jssor slider bullet navigator skin 05 css */
+                        /*
+                    .jssorb05 div           (normal)
+                    .jssorb05 div:hover     (normal mouseover)
+                    .jssorb05 .av           (active)
+                    .jssorb05 .av:hover     (active mouseover)
+                    .jssorb05 .dn           (mousedown)
+                    */
+                        .jssorb05 {
+                            position: absolute;
+                        }
+
+                            .jssorb05 div, .jssorb05 div:hover, .jssorb05 .av {
+                                position: absolute;
+                                /* size of bullet elment */
+                                width: 16px;
+                                height: 16px;
+                                background: url('/Content/images/b05.png') no-repeat;
+                                overflow: hidden;
+                                cursor: pointer;
+                            }
+
+                            .jssorb05 div {
+                                background-position: -7px -7px;
+                            }
+
+                                .jssorb05 div:hover, .jssorb05 .av:hover {
+                                    background-position: -37px -7px;
+                                }
+
+                            .jssorb05 .av {
+                                background-position: -67px -7px;
+                            }
+
+                            .jssorb05 .dn, .jssorb05 .dn:hover {
+                                background-position: -97px -7px;
+                            }
+
+                        /* jssor slider arrow navigator skin 12 css */
+                        /*
+                    .jssora12l                  (normal)
+                    .jssora12r                  (normal)
+                    .jssora12l:hover            (normal mouseover)
+                    .jssora12r:hover            (normal mouseover)
+                    .jssora12l.jssora12ldn      (mousedown)
+                    .jssora12r.jssora12rdn      (mousedown)
+                    */
+                        .jssora12l, .jssora12r {
+                            display: block;
+                            position: absolute;
+                            /* size of arrow element */
+                            width: 30px;
+                            height: 46px;
+                            cursor: pointer;
+                            background: url('/Content/images/a12.png') no-repeat;
+                            overflow: hidden;
+                        }
+
+                        .jssora12l {
+                            background-position: -16px -37px;
+                        }
+
+                        .jssora12r {
+                            background-position: -75px -37px;
+                        }
+
+                        .jssora12l:hover {
+                            background-position: -136px -37px;
+                        }
+
+                        .jssora12r:hover {
+                            background-position: -195px -37px;
+                        }
+
+                        .jssora12l.jssora12ldn {
+                            background-position: -256px -37px;
+                        }
+
+                        .jssora12r.jssora12rdn {
+                            background-position: -315px -37px;
+                        }
+                </style>
+
+                <div id="jssor_1" style="position: relative; margin: 0 auto; top: 0px; left: 0px; width: 860px; height: 190px; overflow: hidden; visibility: hidden;">
+                    <!-- Loading Screen -->
+                    <div data-u="loading" style="position: absolute; top: 0px; left: 0px;">
+                        <div style="filter: alpha(opacity=70); opacity: 0.7; position: absolute; display: block; top: 0px; left: 0px; width: 100%; height: 100%;"></div>
+                        <div style="position:absolute;display:block;background:url('/Content/images/loading.gif') no-repeat center center;top:0px;left:0px;width:100%;height:100%;"></div>
+                    </div>
+                    <div data-u="slides" style="cursor: default; position: relative; top: 0px; left: 0px; width: 860px; height: 190px; overflow: hidden;">
+                        <div data-p="112.50" style="display: none;">
+                            <img data-u="image" src="~/Content/images/02.jpg" />
+                        </div>
+                        <div data-p="112.50" style="display: none;">
+                            <img data-u="image" src="~/Content/images/03.jpg" />
+                        </div>
+                        <div data-p="112.50" style="display: none;">
+                            <img data-u="image" src="~/Content/images/04.jpg" />
+                        </div>
+                        <div data-p="112.50" style="display: none;">
+                            <img data-u="image" src="~/Content/images/05.jpg" />
+                        </div>
+                    </div>
+                    <!-- Bullet Navigator -->
+                    <div data-u="navigator" class="jssorb05" style="bottom:16px;right:16px;" data-autocenter="1">
+                        <!-- bullet navigator item prototype -->
+                        <div data-u="prototype" style="width:16px;height:16px;"></div>
+                    </div>
+                    <!-- Arrow Navigator -->
+                    <span data-u="arrowleft" class="jssora12l" style="top:0px;left:0px;width:30px;height:46px;" data-autocenter="2"></span>
+                    <span data-u="arrowright" class="jssora12r" style="top:0px;right:0px;width:30px;height:46px;" data-autocenter="2"></span>
+                    <a href="http://www.jssor.com" style="display:none">Bootstrap Carousel</a>
+                </div>
+
+                <!-- #endregion Jssor Slider End -->
+
+
+                <div class="navbar navbar-inverse navbar-justified">
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            <li class="active"><a href="~/Home">Home <span class="sr-only">(current)</span></a></li>
+                            <li><a href="~/Home/Biography">Biography</a></li>
+                            @if((string)@Session["Role"] != "A")
+                            {
+                                <li><a href="~/AllCategories/Index">Videos</a></li>
+                            }
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Organizations<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="http://www.khuddam-ul-quran.com/" target="_blank">Khuddam-ul-Quran</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="http://quranacademy.com/" target="_blank">Quran Academy</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="http://www.tanzeem.org/" target="_blank">Tanzeem-e-Islami</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a>Tehreek-e-Khilafat</a></li>
+                                </ul>
+                            </li>
+                            @if(Session["Role"] == null)
+                            {
+                                <li><a href="~/Home/FeedBack">Reviews</a></li>
+                                <li><a href="~/Users/Create">Register</a></li>
+                                <li><a href="~/Users/SignIn">Sign In</a></li>
+                            }
+                            else
+                            {
+                                if((string)@Session["Role"] == "U")
+                                {
+                                    <li><a href="~/Users/Details/@Session["Id"]">Profile</a></li>
+                                    <li><a href="~/Users/SignOut">Sign Out</a></li>
+                                }
+                                else if ((string)@Session["Role"] == "A")
+                                {
+                                    <li><a href="~/Users">Users</a></li>
+                                    <li><a href="~/Videos">Videos</a></li>
+                                    <li><a href="~/Categories">Categories</a></li>
+                                    <li><a href="~/Reviews">Reviews</a></li>
+                                    <li><a href="~/Users/SignOut">Sign Out</a></li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                </div>
+
+                @RenderBody()
+
             </div>
         </div>
-    </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
         <footer>
             <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
         </footer>
     </div>
 
+    <script src="~/Scripts/jquery.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script> 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)

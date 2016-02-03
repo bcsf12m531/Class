@@ -1,0 +1,30 @@
+﻿@model Dr.Israr_Ahmed.Models.Comment
+@{
+    ViewBag.Title = "Play";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Dr.Israr_Ahmed.Models.Video video = @ViewBag.Video;
+    
+}
+<h2>@video.Title</h2>
+<div class="embed-responsive embed-responsive-16by9">
+    <iframe class="embed-responsive-item" width="780" height="440" src=@video.Url ></iframe>
+</div>
+<p>@video.Description</p>
+
+<div style="float:right;" class="panel panel-primary">
+    <div class="panel-heading"><b>Related Videos</b></div>
+    <div class="panel-body">
+    @foreach(Dr.Israr_Ahmed.Models.Video related in ViewBag.Related )
+    {
+        <div class="col-sm-6 col-md-3" style="margin-bottom:20px;">
+            <div class="thumbnail">
+                <a href="~/PlayVideo/Play/@related.Id"><img src="~/Content/SnapShots/@related.Thumbnail" width="160" height="100" /></a>
+                <div class="caption">
+                    <p>@related.Title</p>
+                    <p><a href="~/PlayVideo/Play/@related.Id" class="btn btn-primary" role="button">Play</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
+                </div>
+            </div>
+        </div>
+    }
+   </div>
+</div>
